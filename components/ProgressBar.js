@@ -1,19 +1,39 @@
-import { useEffect, useState } from 'react';
+"use client";
+
+import React, { useEffect, useState } from "react";
+
 export default function ProgressBar() {
-  const total = 14;
-  const [completed, setCompleted] = useState(0);
+  const [solvedCount, setSolvedCount] = useState(0);
+
+  const calculateProgress = () => {
+    let count = 0;
+    for (let i = 1; i <= 14; i++) {
+      if (localStorage.getItem(`puzzle-${i}-solved`) === "true") count++;
+    }
+    setSolvedCount(count);
+  };
+
   useEffect(() => {
-    const update = () => {
-      let count = 0;
-      for (let i = 1; i <= total; i++) {
-        if (localStorage.getItem('puzzle_' + i) === 'true') count++;
-      }
-      setCompleted(count);
-    };
-    update();
-    window.addEventListener('storage', update);
-    return () => window.removeEventListener('storage', update);
+    calculateProgress();
+
+    // Optional: listen to localStorage changes from other tabs
+    const handleStorageChange = () => calculateProgress();
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
-  const percentage = (completed / total) * 100;
-  return (<div className="w-full bg-gray-700 rounded h-6 mt-4"><div className="bg-green-500 h-6 rounded" style={{ width: `${percentage}%`, transition: 'width 0.5s' }}></div><p className="text-center mt-1">{completed}/{total} puzzles solved</p></div>);
+
+  return (
+    <div className="mb-4">
+      <div className="text-sm font-semibold mb-1">
+        {solvedCount} / 14 puzzles solved
+      </div>
+      <div className="w-full bg-gray-300 rounded h-4">
+        <div
+          className="bg-green-500 h-4 rounded"
+          style={{ width: `${(solvedCount / 14) * 100}%` }}
+        />
+      </div>
+    </div>
+  );
 }

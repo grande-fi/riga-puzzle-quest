@@ -16,6 +16,7 @@ export default function PuzzlePage({ params }) {
   const [answer, setAnswer] = useState("");
   const [solved, setSolved] = useState(false);
   const [feedback, setFeedback] = useState("");
+  const [progressKey, setProgressKey] = useState(0); // for live progress update
 
   useEffect(() => {
     // Load saved progress
@@ -31,6 +32,7 @@ export default function PuzzlePage({ params }) {
       setSolved(true);
       localStorage.setItem(`puzzle-${id}-solved`, "true");
       setFeedback("OIKEIN RAKAS!!! Oot ihana. PUS!");
+      setProgressKey((prev) => prev + 1); // trigger progress bar update
     } else {
       setFeedback("Väärin meni kulta. Yritä uudestaan tai saat pusun <3");
     }
@@ -46,7 +48,8 @@ export default function PuzzlePage({ params }) {
 
   return (
     <div className="max-w-xl mx-auto mt-10">
-      <ProgressBar />
+      {/* Live-updating progress bar */}
+      <ProgressBar key={progressKey} />
 
       <Card className={solved ? "border-green-500 shadow-green-300 shadow" : ""}>
         <CardContent className="p-6">
@@ -69,7 +72,11 @@ export default function PuzzlePage({ params }) {
 
           {/* Feedback message */}
           {feedback && (
-            <p className={`mt-4 ${solved ? "text-green-400" : "text-red-400"} font-semibold`}>
+            <p
+              className={`mt-4 ${
+                solved ? "text-green-400" : "text-red-400"
+              } font-semibold`}
+            >
               {feedback}
             </p>
           )}
