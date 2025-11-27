@@ -33,7 +33,7 @@ export default function PuzzlesList() {
 
   return (
     <div className="max-w-xl mx-auto mt-10 text-center">
-      <h1 className="text-3xl font-bold mb-6">Riga Puzzle Quest</h1>
+      <h1 className="text-3xl font-bold mb-6">Heidin Joulu Retki</h1>
       <p className="mb-4">Valitse taso siirtyäksesi siihen:</p>
 
       <div className="flex flex-col gap-3">

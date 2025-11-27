@@ -43,7 +43,7 @@ export default function Home() {
 
   return (
     <div className="max-w-xl mx-auto mt-20 text-center">
-      <h1 className="text-3xl font-bold mb-8">Riga Puzzle Quest</h1>
+      <h1 className="text-3xl font-bold mb-8">Heidin Joulu Retki</h1>
       
       <div className="flex flex-col gap-4">
         {/* Dynamic Puzzle Button */}
