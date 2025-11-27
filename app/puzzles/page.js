@@ -42,7 +42,7 @@ export default function PuzzlesList() {
           const solved = solvedStatus[index];
           const isFirstUnsolved = index === firstUnsolvedIndex;
 
-          // Determine button color
+          // Button color logic
           let buttonClass = "";
           if (solved) buttonClass = "bg-green-600 hover:bg-green-700";
           else if (isFirstUnsolved) buttonClass = "bg-gray-400 hover:bg-gray-500";
@@ -54,7 +54,8 @@ export default function PuzzlesList() {
               onClick={() => goToPuzzle(puzzleId, index)}
               className={buttonClass}
             >
-              Puzzle {puzzleId} {solved ? "(Solved)" : isFirstUnsolved ? "(Open)" : "(Locked)"}
+              Puzzle {puzzleId}{" "}
+              {solved ? "(Solved)" : isFirstUnsolved ? "(Open)" : "(Locked)"}
             </Button>
           );
         })}
