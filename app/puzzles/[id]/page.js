@@ -5,12 +5,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ProgressBar from "@/components/ProgressBar";
 import { useRouter } from "next/navigation";
+import { puzzles } from "../../../puzzleData"; // import questions
 
 export default function PuzzlePage({ params }) {
   const { id } = params;
   const puzzleId = parseInt(id, 10);
   const router = useRouter();
 
+  const puzzle = puzzles[puzzleId - 1]; // current puzzle
   const [answer, setAnswer] = useState("");
   const [solved, setSolved] = useState(false);
 
@@ -23,15 +25,14 @@ export default function PuzzlePage({ params }) {
   }, [id]);
 
   const checkAnswer = () => {
-    // Replace "ok" with your real puzzle answer
-    if (answer.trim().toLowerCase() === "ok") {
+    if (answer.trim() === String(puzzle.answer)) {
       setSolved(true);
       localStorage.setItem(`puzzle-${id}-solved`, "true");
     }
   };
 
   const goToNextPuzzle = () => {
-    if (puzzleId < 14) {
+    if (puzzleId < puzzles.length) {
       router.push(`/puzzles/${puzzleId + 1}`);
     } else {
       router.push("/final");
@@ -40,21 +41,18 @@ export default function PuzzlePage({ params }) {
 
   return (
     <div className="max-w-xl mx-auto mt-10">
-      
-      {/* Progress Bar */}
       <ProgressBar />
 
       <Card className={solved ? "border-green-500 shadow-green-300 shadow" : ""}>
         <CardContent className="p-6">
           <h2 className="text-xl font-bold">Puzzle {id}</h2>
 
-          <p className="mt-2 text-gray-700">
-            This is a placeholder puzzle. Type <b>"ok"</b> to mark it solved.
-          </p>
+          {/* Show the real puzzle question */}
+          <p className="mt-2 text-gray-300">{puzzle.question}</p>
 
           <input
             type="text"
-            className="border p-2 w-full mt-4 rounded"
+            className="border p-2 w-full mt-4 rounded text-black"
             placeholder="Enter your answer"
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
@@ -65,8 +63,8 @@ export default function PuzzlePage({ params }) {
           </Button>
 
           {solved && (
-            <Button 
-              onClick={goToNextPuzzle} 
+            <Button
+              onClick={goToNextPuzzle}
               className="mt-4 bg-green-600 hover:bg-green-700"
             >
               Next Puzzle →
