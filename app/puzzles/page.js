@@ -11,7 +11,7 @@ export default function PuzzlesList() {
   const [firstUnsolvedIndex, setFirstUnsolvedIndex] = useState(0);
 
   useEffect(() => {
-    // Only runs on the client
+    // Runs only in the browser
     const status = puzzles.map((_, index) => {
       const id = index + 1;
       return localStorage.getItem(`puzzle-${id}-solved`) === "true";
@@ -42,17 +42,19 @@ export default function PuzzlesList() {
           const solved = solvedStatus[index];
           const isFirstUnsolved = index === firstUnsolvedIndex;
 
-          // Button color logic
-          let buttonClass = "";
-          if (solved) buttonClass = "bg-green-600 hover:bg-green-700";
-          else if (isFirstUnsolved) buttonClass = "bg-gray-400 hover:bg-gray-500";
-          else buttonClass = "bg-pink-400 cursor-not-allowed";
-
+          // Button colors using inline style
           return (
             <Button
               key={puzzleId}
               onClick={() => goToPuzzle(puzzleId, index)}
-              className={buttonClass}
+              style={{
+                backgroundColor: solved
+                  ? "#16a34a" // green-600
+                  : isFirstUnsolved
+                  ? "#9ca3af" // gray-400
+                  : "#f472b6", // pink-400
+                cursor: !solved && !isFirstUnsolved ? "not-allowed" : "pointer",
+              }}
             >
               Puzzle {puzzleId}{" "}
               {solved ? "(Solved)" : isFirstUnsolved ? "(Open)" : "(Locked)"}
