@@ -1,15 +1,28 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { puzzles } from "../../puzzleData";
 import { Button } from "@/components/ui/button";
+import { puzzles } from "../../puzzleData";
 
 export default function PuzzlesList() {
   const router = useRouter();
+  const [solvedStatus, setSolvedStatus] = useState([]);
+
+  useEffect(() => {
+    // Run only in the browser
+    const status = puzzles.map((_, index) => {
+      const id = index + 1;
+      return localStorage.getItem(`puzzle-${id}-solved`) === "true";
+    });
+    setSolvedStatus(status);
+  }, []);
 
   const goToPuzzle = (id) => {
     router.push(`/puzzles/${id}`);
   };
+
+  if (solvedStatus.length === 0) return null; // wait for client
 
   return (
     <div className="max-w-xl mx-auto mt-10 text-center">
@@ -19,7 +32,7 @@ export default function PuzzlesList() {
       <div className="flex flex-col gap-3">
         {puzzles.map((puzzle, index) => {
           const puzzleId = index + 1;
-          const solved = localStorage.getItem(`puzzle-${puzzleId}-solved`) === "true";
+          const solved = solvedStatus[index];
           return (
             <Button
               key={puzzleId}
