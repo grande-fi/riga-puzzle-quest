@@ -34,7 +34,7 @@ export default function PuzzlesList() {
   return (
     <div className="max-w-xl mx-auto mt-10 text-center">
       <h1 className="text-3xl font-bold mb-6">Riga Puzzle Quest</h1>
-      <p className="mb-4">Valitse puzzle siirtyäksesi siihen:</p>
+      <p className="mb-4">Valitse taso siirtyäksesi siihen:</p>
 
       <div className="flex flex-col gap-3">
         {puzzles.map((puzzle, index) => {
@@ -56,8 +56,8 @@ export default function PuzzlesList() {
                 cursor: !solved && !isFirstUnsolved ? "not-allowed" : "pointer",
               }}
             >
-              Puzzle {puzzleId}{" "}
-              {solved ? "(Solved)" : isFirstUnsolved ? "(Open)" : "(Locked)"}
+              Taso {puzzleId}{" "}
+              {solved ? "(Oikein)" : isFirstUnsolved ? "(Seuraava)" : "(Lukittu)"}
             </Button>
           );
         })}
