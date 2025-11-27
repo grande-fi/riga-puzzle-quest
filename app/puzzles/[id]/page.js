@@ -52,6 +52,7 @@ export default function PuzzlePage({ params }) {
         <CardContent className="p-6">
           <h2 className="text-xl font-bold">Puzzle {id}</h2>
 
+          {/* Display puzzle question */}
           <p className="mt-2 text-gray-300">{puzzle.question}</p>
 
           <input
@@ -73,6 +74,7 @@ export default function PuzzlePage({ params }) {
             </p>
           )}
 
+          {/* Next Puzzle button */}
           {solved && (
             <Button
               onClick={goToNextPuzzle}
@@ -81,6 +83,14 @@ export default function PuzzlePage({ params }) {
               Next Puzzle →
             </Button>
           )}
+
+          {/* Back to Main Menu */}
+          <Button
+            onClick={() => router.push("/")}
+            className="mt-4 bg-gray-600 hover:bg-gray-700"
+          >
+            Back to Main Menu
+          </Button>
         </CardContent>
       </Card>
     </div>
