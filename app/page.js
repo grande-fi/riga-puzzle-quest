@@ -1,0 +1,4 @@
+import Link from 'next/link';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+export default function Home() { return (<main className="flex flex-col items-center mt-16"><Card className="w-full max-w-xl bg-gray-800 border-gray-700"><CardHeader><CardTitle className="text-4xl text-center">Riga Puzzle Quest</CardTitle></CardHeader><CardContent className="text-center space-y-4"><p>Solve 14 puzzles to reveal the final coordinates.</p><Link href="/puzzles"><Button className="w-full text-lg">Start</Button></Link></CardContent></Card></main>); }
