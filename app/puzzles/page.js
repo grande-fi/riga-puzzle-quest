@@ -8,18 +8,25 @@ import { puzzles } from "../../puzzleData";
 export default function PuzzlesList() {
   const router = useRouter();
   const [solvedStatus, setSolvedStatus] = useState([]);
+  const [firstUnsolvedIndex, setFirstUnsolvedIndex] = useState(0);
 
   useEffect(() => {
-    // Run only in the browser
+    // Only runs on the client
     const status = puzzles.map((_, index) => {
       const id = index + 1;
       return localStorage.getItem(`puzzle-${id}-solved`) === "true";
     });
     setSolvedStatus(status);
+
+    // Find first unsolved puzzle
+    const firstUnsolved = status.findIndex((s) => !s);
+    setFirstUnsolvedIndex(firstUnsolved >= 0 ? firstUnsolved : puzzles.length);
   }, []);
 
-  const goToPuzzle = (id) => {
-    router.push(`/puzzles/${id}`);
+  const goToPuzzle = (id, index) => {
+    if (index === firstUnsolvedIndex || solvedStatus[index]) {
+      router.push(`/puzzles/${id}`);
+    }
   };
 
   if (solvedStatus.length === 0) return null; // wait for client
@@ -33,13 +40,21 @@ export default function PuzzlesList() {
         {puzzles.map((puzzle, index) => {
           const puzzleId = index + 1;
           const solved = solvedStatus[index];
+          const isFirstUnsolved = index === firstUnsolvedIndex;
+
+          // Determine button color
+          let buttonClass = "";
+          if (solved) buttonClass = "bg-green-600 hover:bg-green-700";
+          else if (isFirstUnsolved) buttonClass = "bg-gray-400 hover:bg-gray-500";
+          else buttonClass = "bg-pink-400 cursor-not-allowed";
+
           return (
             <Button
               key={puzzleId}
-              onClick={() => goToPuzzle(puzzleId)}
-              className={solved ? "bg-green-600 hover:bg-green-700" : ""}
+              onClick={() => goToPuzzle(puzzleId, index)}
+              className={buttonClass}
             >
-              Puzzle {puzzleId} {solved ? "(Solved)" : ""}
+              Puzzle {puzzleId} {solved ? "(Solved)" : isFirstUnsolved ? "(Open)" : "(Locked)"}
             </Button>
           );
         })}
