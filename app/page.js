@@ -23,7 +23,7 @@ export default function Home() {
     setReady(true);
   }, []);
 
-  const startPuzzle = () => {
+  const goToPuzzle = () => {
     if (nextPuzzle <= 14) {
       router.push(`/puzzles/${nextPuzzle}`);
     } else {
@@ -46,10 +46,17 @@ export default function Home() {
       <h1 className="text-3xl font-bold mb-8">Riga Puzzle Quest</h1>
       
       <div className="flex flex-col gap-4">
-        <Button onClick={startPuzzle}>
+        {/* Dynamic Puzzle Button */}
+        <Button onClick={goToPuzzle}>
           Aloita Puzzle
         </Button>
 
+        {/* NEW: Explicit button to go to puzzles page */}
+        <Button onClick={() => router.push(`/puzzles/${nextPuzzle}`)} className="bg-blue-600 hover:bg-blue-700">
+          Siirry Puzzleihin
+        </Button>
+
+        {/* Reset Progress */}
         <Button onClick={resetProgress} className="bg-red-600 hover:bg-red-700">
           Reset Progress
         </Button>
