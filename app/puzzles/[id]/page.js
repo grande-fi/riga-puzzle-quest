@@ -67,7 +67,7 @@ export default function PuzzlePage({ params }) {
           />
 
           <Button onClick={checkAnswer} className="mt-4">
-            Check Answer
+            Tarkista vastaus
           </Button>
 
           {/* Feedback message */}
@@ -87,7 +87,7 @@ export default function PuzzlePage({ params }) {
               onClick={goToNextPuzzle}
               className="mt-4 bg-green-600 hover:bg-green-700"
             >
-              Next Puzzle →
+              Seuraava tehtävä →
             </Button>
           )}
 
@@ -96,7 +96,7 @@ export default function PuzzlePage({ params }) {
             onClick={() => router.push("/")}
             className="mt-4 bg-gray-600 hover:bg-gray-700"
           >
-            Back to Main Menu
+            Takaisin alkuun
           </Button>
         </CardContent>
       </Card>
