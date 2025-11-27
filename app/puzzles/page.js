@@ -1,18 +1,36 @@
 "use client";
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { Card, CardHeader, CardTitle } from '@/components/ui/card';
-import ProgressBar from '@/components/ProgressBar';
-const puzzleNumbers = Array.from({ length: 14 }, (_, i) => i + 1);
-export default function PuzzleList() {
-  const [progress, setProgress] = useState({});
-  useEffect(() => {
-    const saved = {};
-    puzzleNumbers.forEach(n => {
-      const val = localStorage.getItem('puzzle_' + n);
-      saved[n] = val === 'true';
-    });
-    setProgress(saved);
-  }, []);
-  return (<main className="max-w-2xl mx-auto mt-12 space-y-6"><h1 className="text-4xl text-center mb-6">Choose a Puzzle</h1><ProgressBar /><div className="grid grid-cols-1 sm:grid-cols-2 gap-4">{puzzleNumbers.map(n => (<Link key={n} href={`/puzzles/${n}`}><Card className={`border hover:border-blue-500 transition ${progress[n] ? 'bg-green-800 border-green-600' : 'bg-gray-800 border-gray-700'}`}><CardHeader><CardTitle className="text-center flex justify-between"><span>Puzzle {n}</span>{progress[n] ? (<span className="text-green-400 text-sm">✔</span>) : (<span className="text-red-400 text-sm">•</span>)}</CardTitle></CardHeader></Card></Link>))}</div></main>);
+
+import { useRouter } from "next/navigation";
+import { puzzles } from "../../puzzleData";
+import { Button } from "@/components/ui/button";
+
+export default function PuzzlesList() {
+  const router = useRouter();
+
+  const goToPuzzle = (id) => {
+    router.push(`/puzzles/${id}`);
+  };
+
+  return (
+    <div className="max-w-xl mx-auto mt-10 text-center">
+      <h1 className="text-3xl font-bold mb-6">Riga Puzzle Quest</h1>
+      <p className="mb-4">Valitse puzzle siirtyäksesi siihen:</p>
+
+      <div className="flex flex-col gap-3">
+        {puzzles.map((puzzle, index) => {
+          const puzzleId = index + 1;
+          const solved = localStorage.getItem(`puzzle-${puzzleId}-solved`) === "true";
+          return (
+            <Button
+              key={puzzleId}
+              onClick={() => goToPuzzle(puzzleId)}
+              className={solved ? "bg-green-600 hover:bg-green-700" : ""}
+            >
+              Puzzle {puzzleId} {solved ? "(Solved)" : ""}
+            </Button>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
