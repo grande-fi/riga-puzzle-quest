@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ProgressBar from "@/components/ProgressBar";
 import { useRouter } from "next/navigation";
-import { puzzles } from "../../../puzzleData"; // import questions
+import { puzzles } from "../../../puzzleData";
 
 export default function PuzzlePage({ params }) {
   const { id } = params;
@@ -15,12 +15,14 @@ export default function PuzzlePage({ params }) {
   const puzzle = puzzles[puzzleId - 1]; // current puzzle
   const [answer, setAnswer] = useState("");
   const [solved, setSolved] = useState(false);
+  const [feedback, setFeedback] = useState("");
 
   useEffect(() => {
     // Load saved progress
     const stored = localStorage.getItem(`puzzle-${id}-solved`);
     if (stored === "true") {
       setSolved(true);
+      setFeedback("OIKEIN RAKAS!!! Oot ihana. PUS!");
     }
   }, [id]);
 
@@ -28,6 +30,9 @@ export default function PuzzlePage({ params }) {
     if (answer.trim() === String(puzzle.answer)) {
       setSolved(true);
       localStorage.setItem(`puzzle-${id}-solved`, "true");
+      setFeedback("OIKEIN RAKAS!!! Oot ihana. PUS!");
+    } else {
+      setFeedback("Väärin meni kulta. Yritä uudestaan tai saat pusun <3");
     }
   };
 
@@ -47,7 +52,6 @@ export default function PuzzlePage({ params }) {
         <CardContent className="p-6">
           <h2 className="text-xl font-bold">Puzzle {id}</h2>
 
-          {/* Show the real puzzle question */}
           <p className="mt-2 text-gray-300">{puzzle.question}</p>
 
           <input
@@ -61,6 +65,13 @@ export default function PuzzlePage({ params }) {
           <Button onClick={checkAnswer} className="mt-4">
             Check Answer
           </Button>
+
+          {/* Feedback message */}
+          {feedback && (
+            <p className={`mt-4 ${solved ? "text-green-400" : "text-red-400"} font-semibold`}>
+              {feedback}
+            </p>
+          )}
 
           {solved && (
             <Button
