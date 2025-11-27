@@ -1,4 +1,31 @@
-import Link from 'next/link';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-export default function Home() { return (<main className="flex flex-col items-center mt-16"><Card className="w-full max-w-xl bg-gray-800 border-gray-700"><CardHeader><CardTitle className="text-4xl text-center">Riga Puzzle Quest</CardTitle></CardHeader><CardContent className="text-center space-y-4"><p>Solve 14 puzzles to reveal the final coordinates.</p><Link href="/puzzles"><Button className="w-full text-lg">Start</Button></Link></CardContent></Card></main>); }
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+
+export default function Home() {
+  const router = useRouter();
+
+  const resetProgress = () => {
+    for (let i = 1; i <= 14; i++) {
+      localStorage.removeItem(`puzzle-${i}-solved`);
+    }
+    alert("Progressi nollattu! 😎");
+  };
+
+  return (
+    <div className="max-w-xl mx-auto mt-20 text-center">
+      <h1 className="text-3xl font-bold mb-8">Riga Puzzle Quest</h1>
+      
+      <div className="flex flex-col gap-4">
+        <Button onClick={() => router.push("/puzzles/1")}>
+          Aloita Puzzle 1
+        </Button>
+
+        <Button onClick={resetProgress} className="bg-red-600 hover:bg-red-700">
+          Reset Progress
+        </Button>
+      </div>
+    </div>
+  );
+}
